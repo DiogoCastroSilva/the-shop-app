@@ -1,31 +1,18 @@
-// React
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-// Redux
-import { createStore, combineReducers } from 'redux';
+import { combineReducers, createStore } from 'redux';
+import productReducer from './store/reducers/products';
 import { Provider } from 'react-redux';
+import ShopNavigator from './navigation/ShopNavigator';
 
-// Reducers
-import producstReducer from './store/reducers/products';
-
-//#region  Data Management
 const rootReducer = combineReducers({
-  prodcuts: producstReducer
+  products: productReducer
 });
-
 const store = createStore(rootReducer);
-//#endregion Data Management
 
-// Component
 export default function App() {
-
-  // View
   return (
     <Provider store={store}>
-      
+      <ShopNavigator />
     </Provider>
   );
 }
-
-// Styles
-const styles = StyleSheet.create({});
