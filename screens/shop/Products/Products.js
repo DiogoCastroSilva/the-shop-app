@@ -7,6 +7,9 @@ import {
 // Redux
 import { useSelector } from 'react-redux';
 
+// Components
+import Product from '../../../components/shop/Product/Product';
+
 // Component
 const Products = () => {
 
@@ -17,7 +20,15 @@ const Products = () => {
         <FlatList
             data={products}
             keyExtractor={item => item.id}
-            renderItem={itemData => <Text>{itemData.item.title}</Text>}
+            renderItem={itemData => (
+                                <Product
+                                    image={itemData.item.imageUrl}
+                                    price={itemData.item.price}
+                                    title={itemData.item.title}
+                                    onAddToCart={() => {}}
+                                    onGoToViewDetails={() => {}}
+                                />
+            )}
         />
     );
 };
