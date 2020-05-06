@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import Product from '../../../components/shop/Product/Product';
 
 // Component
-const Products = () => {
+const Products = ({ navigation }) => {
 
     const products = useSelector(state => state.products.availableProducts);
 
@@ -21,13 +21,17 @@ const Products = () => {
             data={products}
             keyExtractor={item => item.id}
             renderItem={itemData => (
-                                <Product
-                                    image={itemData.item.imageUrl}
-                                    price={itemData.item.price}
-                                    title={itemData.item.title}
-                                    onAddToCart={() => {}}
-                                    onGoToViewDetails={() => {}}
-                                />
+                    <Product
+                        image={itemData.item.imageUrl}
+                        price={itemData.item.price}
+                        title={itemData.item.title}
+                        onAddToCart={() => {}}
+                        onGoToViewDetails={() => 
+                            navigation.navigate('ProductDetail',
+                                { id: itemData.item.id, title: itemData.item.title }
+                            )
+                        }
+                    />
             )}
         />
     );
