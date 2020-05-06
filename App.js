@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 // Redux
 import { combineReducers, createStore } from 'redux';
 import productReducer from './store/reducers/products';
+import cartReducer from './store/reducers/cart';
 import { Provider } from 'react-redux';
 // Expo
 import { AppLoading } from 'expo';
@@ -10,11 +11,11 @@ import * as Font from 'expo-font'
 
 // Navigations
 import ShopNavigator from './navigation/ShopNavigator';
-import { AppLoading } from 'expo';
 
 // Redux config
 const rootReducer = combineReducers({
-  products: productReducer
+  products: productReducer,
+  cart: cartReducer
 });
 const store = createStore(rootReducer);
 

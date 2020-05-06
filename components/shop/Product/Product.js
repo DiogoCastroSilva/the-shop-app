@@ -6,12 +6,13 @@ import {
     Image,
     Text,
     Button,
-    Platform
+    Platform,
+    TouchableOpacity,
+    TouchableNativeFeedback
 } from 'react-native';
 
 // Constants
 import Colors from '../../../constants/Colors';
-import { TouchableOpacity, TouchableNativeFeedback } from 'react-native-gesture-handler';
 
 // Component
 const Product = ({
