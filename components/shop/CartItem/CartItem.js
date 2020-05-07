@@ -16,7 +16,8 @@ const CartItem = ({
     onRemove,
     title,
     quantity,
-    ammount
+    ammount,
+    canRemove = false
 }) => {
     let Touchable = TouchableOpacity;
 
@@ -32,13 +33,13 @@ const CartItem = ({
             </View>
             <View style={styles.data}>
                 <Text style={styles.ammount}>${ammount}</Text>
-                <Touchable onPress={onRemove} style={styles.deleteButton}>
+                {canRemove && <Touchable onPress={onRemove} style={styles.deleteButton}>
                     <Ionicons
                         name={Platform.OS === 'android' ? 'md-trash' : 'ios-trash'}
                         size={23}
                         color='red'
                     />
-                </Touchable>
+                </Touchable>}
             </View>
         </View>
     );

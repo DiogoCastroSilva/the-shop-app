@@ -25,15 +25,15 @@ const Cart = () => {
         const transformedCartItems = [];
         for (const key in state.cart.items) {
             transformedCartItems.push({
-                productId: key,
-                productTitle: state.cart.items[key].productTitle,
+                id: key,
+                title: state.cart.items[key].title,
                 price: state.cart.items[key].price,
                 quantity: state.cart.items[key].quantity,
                 sum: state.cart.items[key].sum
             });
         }
         return transformedCartItems.sort((a, b) =>
-            a.productId > b.productId ? 1 : -1
+            a.id > b.id ? 1 : -1
         );
     });
 
@@ -56,14 +56,15 @@ const Cart = () => {
             </View>
             <FlatList
                 data={cartItems}
-                keyExtractor={item => item.productId}
+                keyExtractor={item => item.id}
                 renderItem={itemData => (
                     <CartItem
                         title={itemData.item.title}
                         quantity={itemData.item.quantity}
                         ammount={itemData.item.sum}
+                        canRemove
                         onRemove={() =>
-                            dispatch(removeFromCart(itemData.item.productId))
+                            dispatch(removeFromCart(itemData.item.id))
                         }
                     />
                 )}

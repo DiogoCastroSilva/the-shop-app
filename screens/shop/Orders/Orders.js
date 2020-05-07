@@ -13,6 +13,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 // Components
 import CustomHeaderButton from '../../../components/UI/CustomHeaderButton/CustomHeaderButton';
+import Order from '../../../components/shop/Order/Order';
 
 // Component
 const Orders = () => {
@@ -20,7 +21,13 @@ const Orders = () => {
     return <FlatList
                 data={orders}
                 keyExtractor={item => item.id}
-                renderItem={itemData => <Text>{itemData.item.totalAmount}</Text>}
+                renderItem={itemData => (
+                    <Order
+                        amount={itemData.item.totalAmount}
+                        date={itemData.item.readableDate}
+                        items={itemData.item.items}
+                    />
+                )}
            />;
 };
 
