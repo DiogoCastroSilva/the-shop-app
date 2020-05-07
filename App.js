@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 // Redux
 import { combineReducers, createStore } from 'redux';
+import { Provider } from 'react-redux';
 import productReducer from './store/reducers/products';
 import cartReducer from './store/reducers/cart';
-import { Provider } from 'react-redux';
+import ordersReducer from './store/reducers/orders';
+
 // Expo
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font'
@@ -15,7 +17,8 @@ import ShopNavigator from './navigation/ShopNavigator';
 // Redux config
 const rootReducer = combineReducers({
   products: productReducer,
-  cart: cartReducer
+  cart: cartReducer,
+  orders: ordersReducer
 });
 const store = createStore(rootReducer);
 
@@ -27,6 +30,7 @@ const fetchFonts = () => {
   });
 };
 
+// Component
 export default function App() {
   const [isFontLoaded, setIsFontLoaded] = useState(false);
 

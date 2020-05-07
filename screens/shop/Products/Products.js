@@ -1,7 +1,8 @@
 // React
 import React from 'react';
 import {
-    FlatList, Platform
+    FlatList,
+    Platform
 } from 'react-native';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
@@ -41,9 +42,21 @@ const Products = ({ navigation }) => {
     );
 };
 
+// Navigation
 Products.navigationOptions = navData => {
     return {
         headerTitle: 'All Products',
+        headerLeft:() => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+                <Item
+                    title="Menu"
+                    iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
+                    onPress={() => {
+                        navData.navigation.toggleDrawer();
+                    }}
+                />
+            </HeaderButtons>
+        ),
         headerRight: () => (
             <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
                 <Item

@@ -7,25 +7,74 @@ import {
     Button,
     FlatList
 } from 'react-native';
-import { useSelector } from 'react-redux';
+// Redux
+import { useSelector, useDispatch } from 'react-redux';
+
+
+// Constants
 import Colors from '../../../constants/Colors';
+// Components
+import CartItem from '../../../components/shop/CartItem/CartItem';
+import { removeFromCart } from '../../../store/actions/cart';
+import { addOrder } from '../../../store/actions/orders';
 
 // Component
 const Cart = () => {
     const cartTotalAmount = useSelector(state => state.cart.totalAmount);
+    const cartItems = useSelector(state => {
+        const transformedCartItems = [];
+        for (const key in state.cart.items) {
+            transformedCartItems.push({
+                productId: key,
+                productTitle: state.cart.items[key].productTitle,
+                price: state.cart.items[key].price,
+                quantity: state.cart.items[key].quantity,
+                sum: state.cart.items[key].sum
+            });
+        }
+        return transformedCartItems.sort((a, b) =>
+            a.productId > b.productId ? 1 : -1
+        );
+    });
+
+    const dispatch = useDispatch();
+
     return (
         <View style={styles.screen}>
             <View style={styles.summary}>
                 <Text style={styles.summaryText}>
-                    Total: <Text style={styles.ammount}>${cartTotalAmount}</Text>
+                    Total: <Text style={styles.ammount}>${cartTotalAmount.toFixed(2)}</Text>
                 </Text>
-                <Button title="Order Now" />
+                <Button
+                    title="Order Now"
+                    color={Colors.secondary}
+                    disabled={cartItems.length === 0}
+                    onPress={() => {
+                        dispatch(addOrder(cartItems, cartTotalAmount))
+                    }}
+                />
             </View>
             <FlatList
-
+                data={cartItems}
+                keyExtractor={item => item.productId}
+                renderItem={itemData => (
+                    <CartItem
+                        title={itemData.item.title}
+                        quantity={itemData.item.quantity}
+                        ammount={itemData.item.sum}
+                        onRemove={() =>
+                            dispatch(removeFromCart(itemData.item.productId))
+                        }
+                    />
+                )}
             />
         </View>
     );
+};
+
+// Navigation
+Cart.navigationOptions = {
+    headerTitle: 'Your Cart'
 };
 
 // Styles
