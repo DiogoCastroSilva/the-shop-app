@@ -19,8 +19,8 @@ const Product = ({
     image,
     title,
     price,
-    onGoToViewDetails,
-    onAddToCart
+    onSelect,
+    children
 }) => {
     let Touchable = TouchableOpacity;
 
@@ -30,7 +30,7 @@ const Product = ({
     return (
             <View style={styles.product}>
                 <View style={styles.touchable}>
-                    <Touchable onPress={onGoToViewDetails} useForeground>
+                    <Touchable onPress={onSelect} useForeground>
                         <View>
                             <View style={styles.imageContainer}>
                                 <Image
@@ -43,16 +43,7 @@ const Product = ({
                                 <Text style={styles.price}>${price.toFixed(2)}</Text>
                             </View>
                             <View style={styles.actions}>
-                                <Button
-                                    title="View Details"
-                                    color={Colors.primary}
-                                    onPress={onGoToViewDetails}
-                                />
-                                <Button
-                                    title="To Cart"
-                                    color={Colors.primary}
-                                    onPress={onAddToCart}
-                                />
+                                {children}
                             </View>
                         </View>
                     </Touchable>
@@ -91,7 +82,7 @@ const styles = StyleSheet.create({
     },
     details: {
         alignItems: 'center',
-        height: '15%',
+        height: '17%',
         padding: 10
     },
     title: {
@@ -108,7 +99,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: '25%',
+        height: '23%',
         paddingHorizontal: 20
     }
 });
