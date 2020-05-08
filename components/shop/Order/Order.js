@@ -7,8 +7,10 @@ import {
     Button,
 } from 'react-native';
 
+
 // Components
 import CartItem from '../CartItem/CartItem';
+import Card from '../../UI/Card/Card';
 // Constants
 import Colors from '../../../constants/Colors';
 
@@ -22,7 +24,7 @@ const Order = ({
     const [showDetails, setShowDetails] = useState(false);
     console.log(items);
     return (
-        <View style={styles.container}>
+        <Card style={styles.container}>
             <View style={styles.summary}>
                 <Text style={styles.amount}>${amount.toFixed(2)}</Text>
                 <Text style={styles.date}>{date}</Text>
@@ -47,20 +49,13 @@ const Order = ({
                     ))}
                 </View>
             )}
-        </View>
+        </Card>
     );
 };
 
 // Styles
 const styles = StyleSheet.create({
     container: {
-        shadowColor: 'black',
-        shadowOpacity: 0.26,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 8,
-        elevation: 5,
-        borderRadius: 10,
-        backgroundColor: 'white',
         margin: 20,
         padding: 10,
         alignItems: 'center'

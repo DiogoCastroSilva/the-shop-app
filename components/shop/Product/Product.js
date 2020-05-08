@@ -5,14 +5,14 @@ import {
     View,
     Image,
     Text,
-    Button,
     Platform,
     TouchableOpacity,
     TouchableNativeFeedback
 } from 'react-native';
 
-// Constants
-import Colors from '../../../constants/Colors';
+
+// Components
+import Card from '../../UI/Card/Card';
 
 // Component
 const Product = ({
@@ -28,7 +28,7 @@ const Product = ({
         Touchable = TouchableNativeFeedback;
     }
     return (
-            <View style={styles.product}>
+            <Card style={styles.product}>
                 <View style={styles.touchable}>
                     <Touchable onPress={onSelect} useForeground>
                         <View>
@@ -48,20 +48,13 @@ const Product = ({
                         </View>
                     </Touchable>
                 </View>
-            </View>
+            </Card>
     );
 };
 
 // Styles
 const styles = StyleSheet.create({
     product: {
-        shadowColor: 'black',
-        shadowOpacity: 0.26,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 8,
-        elevation: 5,
-        borderRadius: 10,
-        backgroundColor: 'white',
         height: 300,
         margin: 20
     },
