@@ -1,9 +1,13 @@
 // React
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
     FlatList,
     Button,
-    Platform
+    Platform,
+    View,
+    ActivityIndicator,
+    StyleSheet,
+    Text
 } from 'react-native';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,18 +21,75 @@ import CustomHeaderButton from '../../../components/UI/CustomHeaderButton/Custom
 
 // Constants
 import Colors from '../../../constants/Colors';
+import { fetchProducts } from '../../../store/actions/products';
 
 // Component
 const Products = ({ navigation }) => {
-
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
     const products = useSelector(state => state.products.availableProducts);
     const dispatch = useDispatch();
 
-    selectItemHandler = (id, title) => {
+    const loadProducts = useCallback(async () => {
+        setError(null);
+        setIsLoading(true);
+        try {
+            await dispatch(fetchProducts());
+        } catch(e) {
+            setError(e.message);
+        }
+        
+        setIsLoading(false);
+    }, []);
+
+    useEffect(() => {
+        loadProducts();
+    }, [loadProducts]);
+
+    useEffect(() => {
+        const willFocusSub = navigation.addListener('didFocus', loadProducts);
+
+        return () => {
+            willFocusSub.remove();
+        };
+    }, [navigation, loadProducts]);
+
+
+    const selectItemHandler = (id, title) => {
         navigation.navigate('ProductDetail',
             { id: id, title: title }
         );
     };
+
+    if (error) {
+        return (
+            <View style={styles.center}>
+                <Text>{error}</Text>
+                <Button
+                    title='Try again'
+                    onPress={loadProducts}
+                    color={Colors.primary}
+                />
+            </View>
+        );
+    }
+    if (isLoading) {
+        return (
+            <View style={styles.center}>
+                <ActivityIndicator size='large' color={Colors.primary} />
+            </View>
+        );
+    }
+
+    if (!isLoading && products.length === 0) {
+        return (
+            <View>
+                <Text>No products found. Maybe start adding some</Text>
+            </View>
+        );
+    }
+
+    console.log(products);
 
     // View
     return (
@@ -87,5 +148,13 @@ Products.navigationOptions = navData => {
         )
     };
 };
+
+const styles = StyleSheet.create({
+    center: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+});
 
 export default Products;
