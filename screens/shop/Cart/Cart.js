@@ -1,11 +1,12 @@
 // React
-import React from 'react';
+import React, { useState } from 'react';
 import {
     StyleSheet,
     View,
     Text,
     Button,
-    FlatList
+    FlatList,
+    ActivityIndicator
 } from 'react-native';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,6 +21,8 @@ import Card from '../../../components/UI/Card/Card';
 
 // Component
 const Cart = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
     const cartTotalAmount = useSelector(state => state.cart.totalAmount);
     const cartItems = useSelector(state => {
         const transformedCartItems = [];
@@ -39,21 +42,45 @@ const Cart = () => {
 
     const dispatch = useDispatch();
 
+    const sendOrderHandler = async () => {
+        setIsLoading(true);
+        try {
+            await dispatch(addOrder(cartItems, cartTotalAmount));
+        } catch(e) {
+            setError(e.message);
+        }
+        setIsLoading(false);
+    };
+
     return (
         <View style={styles.screen}>
             <Card style={styles.summary}>
                 <Text style={styles.summaryText}>
                     Total: <Text style={styles.ammount}>${Math.round(cartTotalAmount.toFixed(2) * 100) / 100}</Text>
                 </Text>
-                <Button
-                    title="Order Now"
-                    color={Colors.secondary}
-                    disabled={cartItems.length === 0}
-                    onPress={() => {
-                        dispatch(addOrder(cartItems, cartTotalAmount))
-                    }}
-                />
+                {isLoading
+                    ? <ActivityIndicator
+                        size='small'
+                        color={Colors.primary}
+                    />
+                    : <Button
+                        title="Order Now"
+                        color={Colors.secondary}
+                        disabled={cartItems.length === 0}
+                        onPress={sendOrderHandler}
+                    />
+                }
             </Card>
+            {error && (
+                <View style={styles.center}>
+                    <Text>{error}</Text>
+                    <Button
+                        title='Try again'
+                        onPress={loadProducts}
+                        color={Colors.primary}
+                    />
+                </View>
+            )}
             <FlatList
                 data={cartItems}
                 keyExtractor={item => item.id}
@@ -96,6 +123,11 @@ const styles = StyleSheet.create({
     },
     ammount: {
         color: Colors.primary
+    },
+    center: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 

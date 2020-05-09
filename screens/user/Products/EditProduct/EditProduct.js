@@ -132,6 +132,18 @@ const EditProduct = ({ navigation }) => {
         Keyboard.dismiss();
     };
 
+    if (error) {
+        return (
+            <View style={styles.center}>
+                <Text>{error}</Text>
+                <Button
+                    title='Try again'
+                    onPress={loadProducts}
+                    color={Colors.primary}
+                />
+            </View>
+        );
+    }
     if (isLoading) {
         return (
             <View style={styles.center}>
