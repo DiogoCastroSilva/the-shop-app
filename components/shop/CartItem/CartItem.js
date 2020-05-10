@@ -27,12 +27,12 @@ const CartItem = ({
 
     return (
         <View style={styles.cart}>
-            <View style={styles.data}>
+            <View style={{ ...styles.data, width: '75%'}}>
                 <Text style={styles.quantity}>{quantity} </Text>
                 <Text style={styles.title}>{title}</Text>
             </View>
-            <View style={styles.data}>
-                <Text style={styles.ammount}>${ammount}</Text>
+            <View style={{...styles.data, width: '25%'}}>
+                <Text style={styles.ammount}>${ammount.toFixed(2)}</Text>
                 {canRemove && <Touchable onPress={onRemove} style={styles.deleteButton}>
                     <Ionicons
                         name={Platform.OS === 'android' ? 'md-trash' : 'ios-trash'}
@@ -52,11 +52,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginHorizontal: 20
+        marginHorizontal: 10
     },
     data: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     quantity: {
         fontFamily: 'open-sans',

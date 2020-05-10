@@ -92,7 +92,6 @@ const EditProduct = ({ navigation }) => {
 
     const submitHandler = useCallback(async () => {
         closeKeyboard();
-        console.log(formState);
         if (!formState.formIsValid) {
             Alert.alert('Wrong input!', 'Please enter a valid value', [{ text: 'Ok'}]);
             return;

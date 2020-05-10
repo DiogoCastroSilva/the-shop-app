@@ -44,6 +44,7 @@ const Cart = () => {
 
     const sendOrderHandler = async () => {
         setIsLoading(true);
+        setError();
         try {
             await dispatch(addOrder(cartItems, cartTotalAmount));
         } catch(e) {

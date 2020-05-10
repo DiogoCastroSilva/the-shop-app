@@ -18,6 +18,7 @@ export default (state = initialState, action) => {
                 action.order.date
             );
             return {
+                ...state,
                 orders: state.orders.concat(newOrder)
             };
         default:

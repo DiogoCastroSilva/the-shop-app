@@ -1,5 +1,5 @@
 // React
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
     StyleSheet,
     FlatList,
@@ -22,24 +22,28 @@ import Colors from '../../../constants/Colors';
 // Component
 const Orders = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
     const [error, setError] = useState();
     const orders = useSelector(state => state.orders.orders);
     const dispatch = useDispatch();
 
-    const getOrdersHandler = async () => {
-        setIsLoading(true);
+    const getOrdersHandler = useCallback(async () => {
+        setIsRefreshing(true);
         try {
             await dispatch(fetchOrders());
         } catch(e) {
             setError(e.message);
         }
-        setIsLoading(false);
+        setIsRefreshing(false);
         
-    };
+    }, [setIsRefreshing, setError, dispatch]);
 
     useEffect(() => {
-        getOrdersHandler();
-    }, [getOrdersHandler]);
+        setIsLoading(true);
+        getOrdersHandler().then(() => {
+            setIsLoading(false);
+        });
+    }, [dispatch, getOrdersHandler]);
 
     
     if (isLoading) {
@@ -63,7 +67,17 @@ const Orders = () => {
         );
     }
 
+    if (orders.lenght === 0) {
+        return (
+            <View style={styles.center}>
+                <Text>No orders made, maybe start adding some!</Text>
+            </View>
+        );
+    }
+
     return <FlatList
+                onRefresh={getOrdersHandler}
+                refreshing={isRefreshing}
                 data={orders}
                 keyExtractor={item => item.id}
                 renderItem={itemData => (

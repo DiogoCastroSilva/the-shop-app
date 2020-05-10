@@ -26,24 +26,27 @@ import { fetchProducts } from '../../../store/actions/products';
 // Component
 const Products = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
     const [error, setError] = useState();
     const products = useSelector(state => state.products.availableProducts);
     const dispatch = useDispatch();
 
     const loadProducts = useCallback(async () => {
         setError(null);
-        setIsLoading(true);
+        setIsRefreshing(true);
         try {
             await dispatch(fetchProducts());
         } catch(e) {
             setError(e.message);
         }
-        
-        setIsLoading(false);
-    }, []);
+        setIsRefreshing(false);
+    }, [dispatch, setIsRefreshing, setError]);
 
     useEffect(() => {
-        loadProducts();
+        setIsLoading(true);
+        loadProducts().then(() => {
+            setIsLoading(false);
+        });
     }, [loadProducts]);
 
     useEffect(() => {
@@ -89,11 +92,12 @@ const Products = ({ navigation }) => {
         );
     }
 
-    console.log(products);
 
     // View
     return (
         <FlatList
+            onRefresh={loadProducts}
+            refreshing={isRefreshing}
             data={products}
             keyExtractor={item => item.id}
             renderItem={itemData => (

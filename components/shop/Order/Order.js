@@ -22,7 +22,6 @@ const Order = ({
     items
 }) => {
     const [showDetails, setShowDetails] = useState(false);
-    console.log(items);
     return (
         <Card style={styles.container}>
             <View style={styles.summary}>

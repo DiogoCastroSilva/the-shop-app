@@ -47,9 +47,10 @@ const Input = ({
     email,
     min,
     max,
-    minLength
+    minLength,
+    secureTextEntry = false
 }) => {
-    const [inputState, dispatch] = useReducer(inputReducer, {
+    const [inputState, dispatchInput] = useReducer(inputReducer, {
         value: value ?? '',
         isValid: isValid,
         touched: false
@@ -78,11 +79,11 @@ const Input = ({
         if (minLength != null && value.length < minLength) {
             isValid = false;
         }
-        dispatch({ type: INPUT_CHANGE, value: value, isValid: isValid });
+        dispatchInput({ type: INPUT_CHANGE, value: value, isValid: isValid });
     };
 
     const lostFocusHandler = () => {
-        dispatch({ type: INPUT_BLUR });
+        dispatchInput({ type: INPUT_BLUR });
     };
 
     return (
@@ -91,13 +92,14 @@ const Input = ({
             <TextInput
                 style={styles.input}
                 value={inputState.value}
-                onChangeText={inputChangeHandler}
                 keyboardType={keyboardType}
                 autoCapitalize={autoCapitalize}
                 autoCorrect={autoCorrect}
                 returnKeyType={returnKeyType}
                 multiline={multiline}
                 numberOfLines={numberOfLines}
+                secureTextEntry={secureTextEntry}
+                onChangeText={inputChangeHandler}
                 onSelectionChange={lostFocusHandler}
             />
             {!inputState.isValid && inputState.touched && (

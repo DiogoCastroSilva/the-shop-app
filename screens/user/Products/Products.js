@@ -1,13 +1,17 @@
 // React
-import React from 'react';
+import React, { useState } from 'react';
 import {
     FlatList,
     Button,
     Platform,
-    Alert
+    Alert,
+    StyleSheet,
+    View,
+    Text
 } from 'react-native';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
+import { deleteProduct, fetchProducts } from '../../../store/actions/products';
 // Navigation
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
@@ -17,15 +21,28 @@ import Product from '../../../components/shop/Product/Product';
 import CustomHeaderButton from '../../../components/UI/CustomHeaderButton/CustomHeaderButton';
 // Constants
 import Colors from '../../../constants/Colors';
-import { deleteProduct } from '../../../store/actions/products';
 
 // Component
 const Products = ({ navigation }) => {
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const [error, setError] = useState(false);
     const userProducts = useSelector(state => state.products.userProducts);
     const dispatch = useDispatch();
 
     const editProductHandler = id => {
         navigation.navigate('EditProduct', { id: id });
+    };
+
+    const fetchUserProducts = async () => {
+        setIsRefreshing(true);
+        setError();
+        try {
+            await dispatch(fetchProducts());
+        } catch(e) {
+            setError(e.message);
+        }
+        setIsRefreshing(false);
+        
     };
 
     const deleteHandler = id => {
@@ -41,8 +58,31 @@ const Products = ({ navigation }) => {
         );
     };
 
+    if (error) {
+        return (
+            <View style={styles.center}>
+                <Text>{error}</Text>
+                <Button
+                    title='Try again'
+                    onPress={fetchUserProducts}
+                    color={Colors.primary}
+                />
+            </View>
+        );
+    }
+
+    if (userProducts.lenght === 0) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text>No products found, maybe start adding some!</Text>
+            </View>
+        );
+    }
+
     return (
         <FlatList
+            refreshing={isRefreshing}
+            onRefresh={fetchUserProducts}
             data={userProducts}
             keyExtractor={item => item.id}
             renderItem={itemData => (
@@ -50,7 +90,7 @@ const Products = ({ navigation }) => {
                     image={itemData.item.imageUrl}
                     title={itemData.item.title}
                     price={itemData.item.price}
-                    onSelect={() => {}}
+                    onSelect={() => editProductHandler(itemData.item.id)}
                 >
                     <Button
                         color={Colors.primary}
@@ -62,7 +102,9 @@ const Products = ({ navigation }) => {
                     <Button
                         color={Colors.primary}
                         title="Delete"
-                        onPress={() => deleteHandler(itemData.item.id)}
+                        onPress={() =>
+                            deleteHandler(itemData.item.id)
+                        }
                     />
                 
                 </Product>
@@ -98,5 +140,13 @@ Products.navigationOptions = navData => {
         )
     };
 };
+
+const styles = StyleSheet.create({
+    center: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+});
 
 export default Products;

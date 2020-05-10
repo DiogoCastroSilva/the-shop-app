@@ -1,22 +1,31 @@
 // React
 import React from 'react';
-import { Platform } from 'react-native';
-import { createAppContainer } from 'react-navigation';
+import { Platform, View, SafeAreaView, Button } from 'react-native';
+// Navigation
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
+// Redux
+import { useDispatch } from 'react-redux';
+import { logout } from '../store/actions/auth';
 // Expo
 import { Ionicons } from '@expo/vector-icons';
+
 
 // Screens
 import Products from '../screens/shop/Products/Products';
 import Detail from '../screens/shop/Products/Detail/Detail';
 import Cart from '../screens/shop/Cart/Cart';
 import UserProducts from '../screens/user/Products/Products';
+import Orders from '../screens/shop/Orders/Orders';
+import EditProduct from '../screens/user/Products/EditProduct/EditProduct';
+import Auth from '../screens/user/Auth/Auth';
+import StartUp from '../screens/StartUp/StartUp';
 
 // Constants
 import Colors from '../constants/Colors';
-import Orders from '../screens/shop/Orders/Orders';
-import EditProduct from '../screens/user/Products/EditProduct/EditProduct';
+import Logout from '../components/Logout/Logout';
+
 
 const defaultNavOptions = {
     headerStyle: {
@@ -97,8 +106,24 @@ const ShopNavigator = createDrawerNavigator(
   {
     contentOptions: {
       activeTintColor: Colors.primary
-    }
+    },
+    contentComponent: props => <Logout {...props} />
   }
 );
 
-export default createAppContainer(ShopNavigator);
+const AuthNavigator = createSwitchNavigator(
+  {
+    Auth: Auth
+  }, 
+  {
+    defaultNavigationOptions: defaultNavOptions
+  }
+);
+
+const MainNavigator = createSwitchNavigator({
+  StartUp: StartUp,
+  Auth: AuthNavigator,
+  Shop: ShopNavigator
+});
+
+export default createAppContainer(MainNavigator);
