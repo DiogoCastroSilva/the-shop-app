@@ -50,10 +50,10 @@ const Products = ({ navigation }) => {
     }, [loadProducts]);
 
     useEffect(() => {
-        const willFocusSub = navigation.addListener('didFocus', loadProducts);
+        const unsubscribe = navigation.addListener('focus', loadProducts);
 
         return () => {
-            willFocusSub.remove();
+            unsubscribe();
         };
     }, [navigation, loadProducts]);
 

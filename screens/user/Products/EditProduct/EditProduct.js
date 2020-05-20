@@ -52,7 +52,7 @@ const EditProduct = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
 
-    const id = navigation.getParam('id');
+    const id = navigation.route.params.id;
     const product = useSelector(state =>
         state.products.userProducts.find(prod => prod.id === id)
     );  
@@ -124,7 +124,17 @@ const EditProduct = ({ navigation }) => {
     }, [dispatch, id, formState]);
 
     useEffect(() => {
-        navigation.setParams({ submit: submitHandler });
+        navigation.setOptions({
+            headerRight: () => (
+                <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+                    <Item
+                        title="Save"
+                        iconName={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
+                        onPress={submitHandler}
+                    />
+                </HeaderButtons>
+            )
+        });
     }, [submitHandler]);
 
     const closeKeyboard = () => {
@@ -214,19 +224,9 @@ const EditProduct = ({ navigation }) => {
 };
 
 export const editProductsNavOptions = navData => {
-    const id = navData.navigation.getParam('id');
-    const submit = navData.navigation.getParam('submit');
+    const id = navData.route.params ? navData.route.params.id : null;
     return {
-        headerTitle: id ? 'Edit Product' : 'Add Product',
-        headerRight: () => (
-            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-                <Item
-                    title="Save"
-                    iconName={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
-                    onPress={submit}
-                />
-            </HeaderButtons>
-        )
+        headerTitle: id ? 'Edit Product' : 'Add Product'
     };
 };
 

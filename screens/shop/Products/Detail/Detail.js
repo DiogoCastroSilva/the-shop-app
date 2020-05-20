@@ -18,7 +18,7 @@ import Colors from '../../../../constants/Colors';
 
 // Component
 const Detail = ({ navigation }) => {
-    const id = navigation.getParam('id');
+    const id = navigation.route.params.id;
     const product = useSelector(state =>
         state.products.availableProducts.find(prod => prod.id === id)
     );
@@ -41,7 +41,7 @@ const Detail = ({ navigation }) => {
 };
 
 export const detailsNavOptions = navData => {
-    const title = navData.navigation.getParam('title');
+    const title = navData.route.params.title;
     return {
         headerTitle: title
     };

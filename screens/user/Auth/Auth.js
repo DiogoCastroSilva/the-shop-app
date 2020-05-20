@@ -50,7 +50,7 @@ const formReducer = (state, action) => {
 };
 
 // Component
-const Auth = ({ navigation }) => {
+const Auth = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
     const [isSignUp, setIsSignUp] = useState(false);
@@ -79,7 +79,7 @@ const Auth = ({ navigation }) => {
         let action = isSignUp ? signUp : login;
         try {
             await dispatch(action(formState.inputValues.email, formState.inputValues.password));
-            navigation.navigate('Shop');
+            // navigation.navigate('Shop');
         } catch(e) {
             setError(e.message);
             setIsLoading(false);
