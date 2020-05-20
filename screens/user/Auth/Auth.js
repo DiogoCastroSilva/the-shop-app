@@ -159,7 +159,7 @@ const Auth = ({ navigation }) => {
     );
 };
 
-Auth.navigationOptions = {
+export const authNavOptions = {
     headerTitle: 'Authenticate'
 };
 

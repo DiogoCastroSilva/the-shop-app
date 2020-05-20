@@ -40,7 +40,7 @@ const Detail = ({ navigation }) => {
     );
 };
 
-Detail.navigationOptions = navData => {
+export const detailsNavOptions = navData => {
     const title = navData.navigation.getParam('title');
     return {
         headerTitle: title

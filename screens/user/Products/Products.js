@@ -113,7 +113,7 @@ const Products = ({ navigation }) => {
     );
 };
 
-Products.navigationOptions = navData => {
+export const userProductsNavOptions = navData => {
     return {
         headerTitle: 'You Products',
         headerLeft: () => (

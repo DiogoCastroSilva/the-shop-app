@@ -91,7 +91,7 @@ const Orders = () => {
 };
 
 // Navigation
-Orders.navigationOptions = navData => {
+export const ordersNavOptions = navData => {
     return {
         headerTitle: 'Your Orders',
         headerLeft:() => (

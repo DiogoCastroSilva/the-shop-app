@@ -125,7 +125,7 @@ const Products = ({ navigation }) => {
 };
 
 // Navigation
-Products.navigationOptions = navData => {
+export const productsNavOptions = navData => {
     return {
         headerTitle: 'All Products',
         headerLeft:() => (

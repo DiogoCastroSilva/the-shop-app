@@ -10,17 +10,18 @@ import {
 // Constants
 import Colors from '../../constants/Colors';
 import { useDispatch } from 'react-redux';
-import { authenticate } from '../../store/actions/auth';
+import { authenticate, setDidTryAutoLogin } from '../../store/actions/auth';
 
 // Component
-const StartUp = ({ navigation }) => {
+const StartUp = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
         const tryLogin = async () => {
             const userData = await AsyncStorage.getItem('userData');
             if (!userData) {
-                navigation.navigate('Auth');
+                // navigation.navigate('Auth');
+                dispatch(setDidTryAutoLogin());
                 return;
             }
             const transformedData = JSON.parse(userData);
@@ -28,13 +29,13 @@ const StartUp = ({ navigation }) => {
             const expDate = new Date(expirationDate);
 
             if (expDate <= new Date().getTime() || token || userId || email) {
-                navigation.navigate('Auth');
+                // navigation.navigate('Auth');
+                dispatch(setDidTryAutoLogin());
                 return;
             }
 
             const expirationTime = expDate.getTime() - new Date().getTime();
-
-            navigation.navigate('Shop');
+            // navigation.navigate('Shop');
             dispatch(authenticate(token, userId, email, expirationTime));
         };
 

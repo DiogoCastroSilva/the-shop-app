@@ -213,7 +213,7 @@ const EditProduct = ({ navigation }) => {
     );
 };
 
-EditProduct.navigationOptions = navData => {
+export const editProductsNavOptions = navData => {
     const id = navData.navigation.getParam('id');
     const submit = navData.navigation.getParam('submit');
     return {

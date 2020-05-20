@@ -102,7 +102,7 @@ const Cart = () => {
 };
 
 // Navigation
-Cart.navigationOptions = {
+export const cartNavOptions = {
     headerTitle: 'Your Cart'
 };
 
