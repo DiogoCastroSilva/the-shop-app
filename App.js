@@ -14,7 +14,7 @@ import { AppLoading } from 'expo';
 import * as Font from 'expo-font'
 
 // Navigations
-import NavigationContainer from './navigation/NavigationContainer';
+import AppNavigator from './navigation/AppNavigator';
 
 // Redux config
 const rootReducer = combineReducers({
@@ -46,7 +46,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer />
+      <AppNavigator />
     </Provider>
   );
 }
