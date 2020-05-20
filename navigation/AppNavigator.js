@@ -12,7 +12,7 @@ import StartUp from '../screens/StartUp/StartUp';
 
 
 // Component
-const NavigationContainer = () => {
+const AppNavigator = () => {
     const isAuth = useSelector(state => !!state.auth.token);
     const didTryAutoLogin = useSelector(state => state.auth.didTryAutoLogin);
 
@@ -21,9 +21,8 @@ const NavigationContainer = () => {
             {isAuth && <ShopNavigator />}
             {!isAuth && didTryAutoLogin && <AuthNavigator />}
             {!isAuth && !didTryAutoLogin && <StartUp />}
-           <ShopNavigator />
         </NavigationContainer>
     );
 };
 
-export default NavigationContainer;
+export default AppNavigator;

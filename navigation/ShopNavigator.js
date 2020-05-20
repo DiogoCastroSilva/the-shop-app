@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 // Navigation
 import { createStackNavigator } from '@react-navigation/stack'
-import { createStackNavigator, DrawerItemList } from '@react-navigation/drawer'
+import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
 // Expo
 import { Ionicons } from '@expo/vector-icons';
 // Redux
@@ -24,8 +24,6 @@ import UserProducts, { userProductsNavOptions } from '../screens/user/Products/P
 import Orders, { ordersNavOptions } from '../screens/shop/Orders/Orders';
 import EditProduct, { editProductsNavOptions } from '../screens/user/Products/EditProduct/EditProduct';
 import Auth, { authNavOptions } from '../screens/user/Auth/Auth';
-import StartUp from '../screens/StartUp/StartUp';
-
 
 // Constants
 import Colors from '../constants/Colors';
@@ -193,10 +191,10 @@ export const AuthNavigator = () => (
 );
 
 
-const MainNavigator = createSwitchNavigator({
-  StartUp: StartUp,
-  Auth: AuthNavigator,
-  Shop: ShopNavigator
-});
+// const MainNavigator = createSwitchNavigator({
+//   StartUp: StartUp,
+//   Auth: AuthNavigator,
+//   Shop: ShopNavigator
+// });
 
-export default createAppContainer(MainNavigator);
+// export default createAppContainer(MainNavigator);
